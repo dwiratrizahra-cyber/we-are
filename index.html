@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My AU iPhone</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#d8d9df;color:#fff;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ display:flex;justify-content:center;align-items:center;
+ min-height:100vh;padding:12px
+}
+.phone{
+ width:390px;max-width:100%;height:840px;max-height:96vh;
+ min-height:590px;background:#111;border:6px solid #151515;
+ border-radius:42px;overflow:hidden;position:relative;
+ box-shadow:0 18px 50px #0004
+}
+.screen{
+ position:absolute;inset:0;display:none;flex-direction:column;
+ overflow:hidden;background:#151520
+}
+.screen.active{display:flex}
+.status{
+ height:34px;flex-shrink:0;padding:10px 23px 0;
+ display:flex;justify-content:space-between;font-size:12px;
+ font-weight:700;position:relative;z-index:5
+}
+.wallpaper{
+ background:
+ linear-gradient(160deg,#a4a9c2 0%,#5c647f 35%,#272b40 75%,#12131d 100%);
+}
+.lockcenter{text-align:center;margin-top:65px}
+.lockdate{font-size:15px;letter-spacing:.4px}
+.locktime{font-size:76px;font-weight:200;letter-spacing:-4px}
+.locknotif{
+ margin:40px 14px 0;background:#ffffff28;
+ border:1px solid #ffffff25;border-radius:17px;
+ padding:13px;color:white;backdrop-filter:blur(18px)
+}
+.notifhead{font-size:12px;opacity:.8}
+.notifbody{font-size:14px;margin-top:5px}
+.lockbottom{
+ margin-top:auto;padding:18px 27px 30px;
+ display:flex;justify-content:space-between;align-items:center
+}
+.circle{
+ border:0;border-radius:50%;width:44px;height:44px;
+ background:#ffffff2a;color:white;font-size:20px
+}
+.unlock{
+ border:0;background:#fff;color:#222;border-radius:22px;
+ padding:12px 22px;font-weight:700
+}
+.homewall{
+ background:linear-gradient(155deg,#b6a6c7,#6b7191 45%,#292c42 80%,#12131d)
+}
+.homegrid{
+ display:grid;grid-template-columns:repeat(4,1fr);
+ gap:24px 10px;padding:35px 15px 15px
+}
+.app{
+ border:0;background:transparent;color:white;
+ display:flex;align-items:center;flex-direction:column;gap:6px;
+ font-size:11px;cursor:pointer;min-width:0
+}
+.appicon{
+ width:54px;height:54px;border-radius:14px;
+ display:grid;place-items:center;font-size:27px;
+ box-shadow:0 3px 9px #0002;overflow:hidden
+}
+.messagesIcon{background:linear-gradient(#5bea70,#16bd48)}
+.contactsIcon{background:linear-gradient(#fff,#d9dce5);color:#4285e9}
+.photosIcon{background:#fff;color:#e45b8b}
+.settingsIcon{background:linear-gradient(#bfc4ce,#777e8d)}
+.notesIcon{background:linear-gradient(#fff 65%,#f3d94f 65%);color:#555}
+.cameraIcon{background:linear-gradient(#444,#111)}
+.dock{
+ margin-top:auto;margin-left:12px;margin-right:12px;margin-bottom:27px;
+ padding:12px 15px;background:#ffffff32;border-radius:27px;
+ display:flex;justify-content:space-around;backdrop-filter:blur(15px)
+}
+.dock .appicon{width:52px;height:52px}
+.app img{width:100%;height:100%;object-fit:cover}
+.topbar{
+ height:60px;display:flex;align-items:center;gap:10px;
+ padding:8px 13px;background:#f8f8fc;color:#17171b;
+ border-bottom:1px solid #dedee4;flex-shrink:0
+}
+.back{
+ border:0;background:none;color:#087ff5;font-size:29px;
+ padding:0 3px;cursor:pointer
+}
+.avatar{
+ width:42px;height:42px;flex-shrink:0;border-radius:50%;
+ background:#7c8295;overflow:hidden;display:grid;place-items:center;
+ color:#fff;font-weight:700;font-size:16px
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.contactname{font-weight:750;font-size:15px}
+.muted{font-size:11px;color:#898992;margin-top:3px}
+.topright{margin-left:auto;color:#087ff5;font-size:20px}
+.listScreen{background:#f5f5fa;color:#16161a}
+.listtitle{padding:18px 16px 12px;font-size:29px;font-weight:800}
+.search{margin:0 13px 12px;padding:10px 12px;border-radius:11px;background:#e7e7ed;color:#85858e;font-size:14px}
+.contactrow{
+ display:flex;align-items:center;gap:11px;padding:12px 14px;
+ border-bottom:1px solid #e3e3e9;cursor:pointer
+}
+.contactrow:active{background:#e6e6ed}
+.contactinfo{flex:1;min-width:0}
+.preview{font-size:12px;color:#898992;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px}
+.chatScreen{background:#f5f5fa;color:#16161a}
+.chat{
+ flex:1;min-height:0;overflow-y:auto;padding:15px 11px 12px;
+ display:flex;flex-direction:column;gap:9px;scroll-behavior:smooth
+}
+.date{text-align:center;color:#898992;font-size:11px;margin:5px 0 9px}
+.bubble{
+ max-width:82%;padding:10px 13px;border-radius:18px;
+ font-size:15px;line-height:1.4;overflow-wrap:anywhere;
+ white-space:pre-wrap;animation:appear .18s ease-out
+}
+.in{align-self:flex-start;background:#e5e5eb;border-bottom-left-radius:5px}
+.out{align-self:flex-end;background:#1685f8;color:#fff;border-bottom-right-radius:5px}
+.typing{
+ align-self:flex-start;background:#e5e5eb;border-radius:17px;
+ border-bottom-left-radius:6px;padding:12px 14px;
+ display:flex;gap:4px
+}
+.dot{width:6px;height:6px;border-radius:50%;background:#8a8a92;animation:dot .7s infinite}
+.dot:nth-child(2){animation-delay:.13s}
+.dot:nth-child(3){animation-delay:.26s}
+.composer{
+ background:#fafaff;border-top:1px solid #dedee4;
+ padding:9px 10px 7px;flex-shrink:0;color:#222
+}
+.composerrow{display:flex;align-items:center;gap:8px}
+.plus{font-size:24px;color:#1685f8}
+.fakeinput{
+ flex:1;min-height:38px;border:1px solid #c9c9d0;border-radius:20px;
+ background:white;padding:9px 13px;color:#4d4d55;font-size:13px;
+ overflow-wrap:anywhere
+}
+.keyboard{
+ display:none;margin-top:9px;padding:7px 3px;background:#d8dbe3;
+ border-radius:9px;gap:5px;flex-direction:column
+}
+.keyboard.show{display:flex}
+.keyrow{display:flex;justify-content:center;gap:4px}
+.key{
+ flex:1;min-width:0;height:31px;background:#fff;color:#34343a;
+ border-radius:5px;display:grid;place-items:center;font-size:12px;
+ box-shadow:0 1px 0 #a8aab1;transition:background .07s,transform .07s
+}
+.key.active{background:#9fcaff;transform:translateY(1px)}
+.key.special{background:#b9bdc7;flex:1.4}
+.key.space{flex:5}
+.actions{
+ display:flex;gap:7px;padding:8px 10px;background:#fafaff;
+ flex-shrink:0;border-top:1px solid #e3e3e9
+}
+.action{
+ flex:1;border:0;border-radius:12px;background:#171719;color:#fff;
+ padding:12px 8px;font-size:13px;font-weight:700
+}
+.action:disabled{opacity:.45}
+.secondary{
+ border:1px solid #ccc;background:white;color:#333;
+ border-radius:12px;padding:8px;font-size:12px
+}
+.hint{
+ background:#fafaff;color:#8b8b94;font-size:10px;
+ text-align:center;padding:0 8px 7px
+}
+.homebar{
+ width:105px;height:4px;border-radius:5px;background:#fff;
+ position:absolute;bottom:7px;left:50%;transform:translateX(-50%);
+ z-index:10
+}
+.chatHomebar{background:#777}
+@keyframes dot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- LOCK SCREEN -->
+<section class="screen active wallpaper" id="lock">
+  <div class="status"><span id="statusTime">9:41</span><span>●●● ▰</span></div>
+  <div class="lockcenter">
+    <div class="lockdate" id="lockdate">Selasa, 27 Oktober</div>
+    <div class="locktime" id="locktime">23:17</div>
+  </div>
+  <div class="locknotif">
+    <div class="notifhead">MESSAGES · NOTIFICATION</div>
+    <div class="notifbody">Pesan baru akan muncul di sini.</div>
+  </div>
+  <div class="lockbottom">
+    <button class="circle" onclick="unlock()">⌁</button>
+    <button class="unlock" onclick="unlock()">Buka iPhone ↑</button>
+    <button class="circle" onclick="unlock()">◎</button>
+  </div>
+</section>
+
+<!-- HOME SCREEN -->
+<section class="screen homewall" id="home">
+  <div class="status"><span class="time">9:41</span><span>●●● ▰</span></div>
+  <div class="homegrid">
+    <button class="app" onclick="openMessages()">
+      <div class="appicon messagesIcon">●</div><span>Messages</span>
+    </button>
+    <button class="app" onclick="openContacts()">
+      <div class="appicon contactsIcon">👤</div><span>Contacts</span>
+    </button>
+    <button class="app" onclick="showApp('Photos')">
+      <div class="appicon photosIcon">🌈</div><span>Photos</span>
+    </button>
+    <button class="app" onclick="showApp('Settings')">
+      <div class="appicon settingsIcon">⚙</div><span>Settings</span>
+    </button>
+    <button class="app" onclick="showApp('Notes')">
+      <div class="appicon notesIcon">▤</div><span>Notes</span>
+    </button>
+    <button class="app" onclick="showApp('Camera')">
+      <div class="appicon cameraIcon">◉</div><span>Camera</span>
+    </button>
+  </div>
+  <div class="dock">
+    <button class="app" onclick="openContacts()"><div class="appicon contactsIcon">👤</div></button>
+    <button class="app" onclick="openMessages()"><div class="appicon messagesIcon">●</div></button>
+    <button class="app" onclick="showApp('Photos')"><div class="appicon photosIcon">🌈</div></button>
+    <button class="app" onclick="showApp('Settings')"><div class="appicon settingsIcon">⚙</div></button>
+  </div>
+</section>
+
+<!-- MESSAGES LIST -->
+<section class="screen listScreen" id="messages">
+  <div class="status"><span class="time">9:41</span><span>●●● ▰</span></div>
+  <div class="listtitle">Messages</div>
+  <div class="search">⌕ Search</div>
+  <div id="messageList"></div>
+</section>
+
+<!-- CONTACTS LIST -->
+<section class="screen listScreen" id="contacts">
+  <div class="status"><span class="time">9:41</span><span>●●● ▰</span></div>
+  <div class="listtitle">Contacts</div>
+  <div class="search">⌕ Search Contacts</div>
+  <div id="contactList"></div>
+</section>
+
+<!-- CHAT SCREEN -->
+<section class="screen chatScreen" id="chatScreen">
+  <div class="status"><span class="time">9:41</span><span>●●● ▰</span></div>
+  <header class="topbar">
+    <button class="back" onclick="openMessages()">‹</button>
+    <div class="avatar" id="chatAvatar">E</div>
+    <div>
+      <div class="contactname" id="chatName">Elang</div>
+      <div class="muted">iMessage</div>
+    </div>
+    <div class="topright">⌕</div>
+  </header>
+  <main class="chat" id="chat">
+    <div class="date">iMessage · Hari ini</div>
+  </main>
+  <div class="composer">
+    <div class="composerrow">
+      <div class="plus">＋</div>
+      <div class="fakeinput" id="fakeinput">iMessage</div>
+    </div>
+    <div class="keyboard" id="keyboard"></div>
+  </div>
+  <div class="hint" id="hint">Pesan mengikuti alur cerita</div>
+  <div class="actions">
+    <button class="action" id="trigger" onclick="triggerNext()">▶ Mulai percakapan</button>
+    <button class="secondary" onclick="skipTyping()">Lewati</button>
+  </div>
+</section>
+
+<!-- OTHER APPS -->
+<section class="screen listScreen" id="otherApp">
+  <div class="status"><span class="time">9:41</span><span>●●● ▰</span></div>
+  <div class="listtitle" id="otherTitle">App</div>
+  <div style="padding:16px;color:#777">Aplikasi simulasi AU.</div>
+  <button class="action" style="margin:15px" onclick="goHome()">Kembali ke Home</button>
+</section>
+
+<div class="homebar" id="homebar" onclick="goHome()"></div>
+</div>
+
+<script>
+/* Ganti nama file foto sesuai foto yang kamu unggah ke folder foto. */
+const characters = {
+  Elang: {photo:"foto/elang.jpg", messages:[
+    {from:"other",text:"Lo udah sampai rumah?"},
+    {from:"me",text:"Udah. Lo sendiri masih di luar?"},
+    {from:"other",text:"Sebentar lagi pulang."},
+    {from:"me",text:"Jangan pulang kemaleman. Udah malam."},
+    {from:"other",text:"Tumben khawatir."},
+    {from:"me",text:"Gue cuma ngingetin, kali."}
+  ]},
+  Vansen: {photo:"foto/vansen.jpg", messages:[
+    {from:"other",text:"Lo lagi sibuk?"},
+    {from:"me",text:"Nggak juga. Kenapa?"},
+    {from:"other",text:"Gue mau cerita sesuatu."},
+    {from:"me",text:"Ya udah, cerita aja."}
+  ]},
+  Thor: {photo:"foto/thor.jpg", messages:[
+    {from:"other",text:"Besok jangan lupa."},
+    {from:"me",text:"Lupa apaan?"},
+    {from:"other",text:"Serius, lo lupa?"},
+    {from:"me",text:"Thor, ngomong yang jelas."}
+  ]},
+  Ceri: {photo:"foto/ceri.jpg", messages:[
+    {from:"other",text:"Gue punya kabar."},
+    {from:"me",text:"Kabar apaan?"},
+    {from:"other",text:"Tapi jangan kaget, ya."},
+    {from:"me",text:"Ih, bikin penasaran aja."}
+  ]}
+};
+
+let current = "Elang";
+let index = 0;
+let busy = false;
+let skip = false;
+let waitingForMe = false;
+let runId = 0;
+
+const $ = id => document.getElementById(id);
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  $("homebar").style.background = id==="home"||id==="lock" ? "#fff" : "#777";
+}
+function unlock(){showScreen("home")}
+function goHome(){showScreen("home")}
+function showApp(name){
+  $("otherTitle").textContent=name;
+  showScreen("otherApp");
+}
+function photoHTML(name,size="42px"){
+  const src=characters[name].photo;
+  return `<div class="avatar" style="width:${size};height:${size}">
+    <img src="${src}" alt="${name}" onerror="this.remove();this.parentElement.textContent='${name[0]}'">
+  </div>`;
+}
+function makeLists(){
+  $("messageList").innerHTML="";
+  $("contactList").innerHTML="";
+  Object.keys(characters).forEach(name=>{
+    const row=document.createElement("div");
+    row.className="contactrow";
+    row.innerHTML=photoHTML(name)+`<div class="contactinfo">
+      <div><b>${name}</b></div><div class="preview">Ketuk untuk membuka percakapan</div>
+    </div><span style="color:#aaa">›</span>`;
+    row.onclick=()=>openChat(name);
+    $("messageList").appendChild(row);
+    const c=row.cloneNode(true);
+    c.onclick=()=>openChat(name);
+    $("contactList").appendChild(c);
+  });
+}
+function openMessages(){makeLists();showScreen("messages")}
+function openContacts(){makeLists();showScreen("contacts")}
+
+function makeKeyboard(){
+  const kb=$("keyboard");kb.innerHTML="";
+  ["qwertyuiop","asdfghjkl","⇧zxcvbnm⌫"].forEach(chars=>{
+    const row=document.createElement("div");row.className="keyrow";
+    [...chars].forEach(ch=>{
+      const k=document.createElement("div");
+      k.className="key"+("⇧⌫".includes(ch)?" special":"");
+      k.textContent=ch;row.appendChild(k);
+    });
+    kb.appendChild(row);
+  });
+  const row=document.createElement("div");row.className="keyrow";
+  ["123","😊","English","↵"].forEach((ch,i)=>{
+    const k=document.createElement("div");
+    k.className="key "+(i===2?"space":"special");
+    k.textContent=ch;row.appendChild(k);
+  });
+  kb.appendChild(row);
+}
+makeKeyboard();
+
+function addBubble(text,from){
+  const b=document.createElement("div");
+  b.className="bubble "+(from==="me"?"out":"in");
+  b.textContent=text;$("chat").appendChild(b);
+  $("chat").scrollTop=$("chat").scrollHeight;
+}
+function typingOn(){
+  typingOff();
+  const t=document.createElement("div");t.id="typing";t.className="typing";
+  for(let i=0;i<3;i++){
+    const d=document.createElement("div");d.className="dot";t.appendChild(d);
+  }
+  $("chat").appendChild(t);$("chat").scrollTop=$("chat").scrollHeight;
+}
+function typingOff(){$("typing")?.remove()}
+function wait(ms,id){
+  return new Promise(resolve=>setTimeout(()=>resolve(id===runId),ms));
+}
+async function animate(item){
+  busy=true;$("trigger").disabled=true;skip=false;
+  $("keyboard").classList.add("show");$("fakeinput").textContent="";
+  typingOn();
+  const keys=[...$("keyboard").querySelectorAll(".key")];
+  for(let i=0;i<item.text.length;i++){
+    if(skip||runId!==activeRun)return;
+    $("fakeinput").textContent=item.text.slice(0,i+1);
+    const ch=item.text[i].toLowerCase();
+    const key=keys.find(k=>k.textContent.toLowerCase()===ch);
+    if(key){key.classList.add("active");setTimeout(()=>key.classList.remove("active"),100)}
+    const ok=await wait(45+Math.random()*65,activeRun);
+    if(!ok)return;
+  }
+  if(runId!==activeRun)return;
+  $("fakeinput").textContent=item.text;
+  await wait(skip?0:250,activeRun);
+  if(runId!==activeRun)return;
+  typingOff();$("keyboard").classList.remove("show");
+  $("fakeinput").textContent="iMessage";
+  addBubble(item.text,item.from);
+  index++;busy=false;$("trigger").disabled=false;
+  continueStory();
+}
+let activeRun=0;
+function continueStory(){
+  const messages=characters[current].messages;
+  if(index>=messages.length){
+    $("trigger").textContent="↻ Ulangi percakapan";
+    $("hint").textContent="Cerita selesai";
+    return;
+  }
+  if(messages[index].from==="me"){
+    waitingForMe=true;
+    $("trigger").textContent="⌨ Ketik pesan aku";
+    $("hint").textContent="Tekan trigger untuk mengetik pesan karakter aku.";
+  }else{
+    waitingForMe=false;
+    $("trigger").textContent="▶ Menunggu pesan…";
+    $("hint").textContent=current+" akan mengirim pesan berikutnya.";
+    const id=activeRun;
+    setTimeout(()=>{
+      if(id===activeRun&&!busy&&!waitingForMe)sendNextOther();
+    },900+Math.random()*900);
+  }
+}
+async function sendNextOther(){
+  if(busy||index>=characters[current].messages.length)return;
+  const item=characters[current].messages[index];
+  if(item.from!=="other")return;
+  await animate(item);
+}
+async function triggerNext(){
+  if(busy)return;
+  if(index>=characters[current].messages.length){openChat(current);return}
+  const item=characters[current].messages[index];
+  if(item.from==="me"){
+    waitingForMe=false;
+    await animate(item);
+  }else{
+    /* Pesan karakter lain muncul otomatis; trigger bisa memajukan bila perlu. */
+    await sendNextOther();
+  }
+}
+function skipTyping(){if(busy)skip=true;else triggerNext()}
+
+function openChat(name){
+  current=name;index=0;busy=false;skip=false;waitingForMe=false;
+  runId++;activeRun=runId;
+  $("chatName").textContent=name;
+  $("chatAvatar").innerHTML=`<img src="${characters[name].photo}" alt="${name}" onerror="this.remove();this.parentElement.textContent='${name[0]}'">`;
+  $("chat").innerHTML='<div class="date">iMessage · Hari ini</div>';
+  $("fakeinput").textContent="iMessage";
+  $("keyboard").classList.remove("show");
+  $("trigger").disabled=false;
+  $("trigger").textContent="▶ Mulai percakapan";
+  $("hint").textContent="Pesan akan muncul mengikuti alur cerita.";
+  showScreen("chatScreen");
+  /* Mulai dengan pesan karakter lain secara otomatis. */
+  setTimeout(()=>{
+    if(current===name&&index===0&&!busy)sendNextOther();
+  },700);
+}
+
+/* Jam dan tanggal simulasi */
+function updateClock(){
+  const d=new Date();
+  const time=d.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit",hour12:false});
+  document.querySelectorAll(".time").forEach(el=>el.textContent=time);
+  $("statusTime").textContent=time;
+  $("locktime").textContent=time;
+  $("lockdate").textContent=d.toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long"});
+}
+updateClock();setInterval(updateClock,30000);
+makeLists();
+</script>
+</body>
+</html>
