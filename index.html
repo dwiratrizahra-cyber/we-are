@@ -1,0 +1,134 @@
+<div class="iphone-container">
+    <div class="dynamic-island"></div>
+
+    <!-- Screen 1: Lock Screen -->
+    <div id="lock-screen" class="screen active">
+        <div class="time" id="lock-time">19:30</div>
+        <div class="date">Selasa, 27 Oktober</div>
+        
+        <div class="lock-section">
+            <div class="pin-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <p class="pin-hint">Masukkan PIN (Petunjuk: 1234)</p>
+            
+            <div class="keypad">
+                <button onclick="pressNum(1)">1</button>
+                <button onclick="pressNum(2)">2</button>
+                <button onclick="pressNum(3)">3</button>
+                <button onclick="pressNum(4)">4</button>
+                <button onclick="pressNum(5)">5</button>
+                <button onclick="pressNum(6)">6</button>
+                <button onclick="pressNum(7)">7</button>
+                <button onclick="pressNum(8)">8</button>
+                <button onclick="pressNum(9)">9</button>
+                <button onclick="clearPin()">C</button>
+                <button onclick="pressNum(0)">0</button>
+                <button onclick="submitPin()">✓</button>
+            </div>
+            <p id="error-msg" class="error-text"></p>
+        </div>
+    </div>
+
+    <!-- Screen 2: Home Screen -->
+    <div id="home-screen" class="screen">
+        <!-- Banner Notifikasi Melayang dari Karakter -->
+        <div id="notif-banner" class="notification-banner" onclick="openApp('chat-app')">
+            <div class="notif-icon">💬</div>
+            <div class="notif-text">
+                <span class="notif-sender">Servan</span>
+                <span class="notif-msg">Kalian pada di mana sih? Cepat buka HP!</span>
+            </div>
+        </div>
+
+        <div class="home-title">Home Screen</div>
+        <div class="app-grid">
+            <div class="app-icon" onclick="openApp('chat-app')">
+                <div class="icon-bg messages-bg">💬</div>
+                <span>Messages</span>
+            </div>
+            <div class="app-icon" onclick="openApp('notes-app')">
+                <div class="icon-bg notes-bg">📝</div>
+                <span>Notes</span>
+            </div>
+        </div>
+        <div class="home-bar" onclick="goHome()"></div>
+    </div>
+
+    <!-- Screen 3: iMessage App (Grup Chat 5 Karakter + POV Kamu) -->
+    <div id="chat-app" class="app-screen">
+        <div class="imessage-header">
+            <button class="back-btn" onclick="closeApp()">‹ Pesan</button>
+            <div class="contact-info">
+                <div class="contact-avatar">👥</div>
+                <span class="contact-name">Grup Chaos (Servan, Vansen, Ceri, Thor, Allan)</span>
+            </div>
+            <div class="header-spacer"></div>
+        </div>
+
+        <div class="imessage-content">
+            <div class="chat-timestamp">Hari ini 19:32</div>
+            
+            <!-- Pesan dari Servan -->
+            <div class="imessage-bubble received">
+                <b class="sender-name">Servan:</b> Woy, HP siapa nih yang ketinggalan?
+            </div>
+
+            <!-- Pesan dari Vansen -->
+            <div class="imessage-bubble received">
+                <b class="sender-name">Vansen:</b> Bukan punya gua, tanya si Ceri tuh.
+            </div>
+
+            <!-- Pesan dari Ceri -->
+            <div class="imessage-bubble received">
+                <b class="sender-name">Ceri:</b> Enak aja! Punya aku aman di tas kok. Coba cek catatan, kayaknya ada petunjuk.
+            </div>
+
+            <!-- Pesan dari Thor -->
+            <div class="imessage-bubble received">
+                <b class="sender-name">Thor:</b> Kalau kata gua sih 1234 kodenya.
+            </div>
+
+            <!-- Pesan dari Allan -->
+            <div class="imessage-bubble received">
+                <b class="sender-name">Allan:</b> Udah dibilangin jangan ceroboh, malah pada rame di sini.
+            </div>
+
+            <!-- Pesan dari Kamu (POV) -->
+            <div class="imessage-bubble sent">
+                Tenang, HP-nya udah kubuka kok berkat petunjuk kalian.
+            </div>
+            <div class="read-receipt">Dibaca oleh semua</div>
+        </div>
+
+        <div class="imessage-input-bar">
+            <input type="text" placeholder="iMessage" disabled />
+            <button class="send-btn">↑</button>
+        </div>
+
+        <div class="home-bar" onclick="goHome()"></div>
+    </div>
+
+    <!-- Screen 4: Notes App -->
+    <div id="notes-app" class="app-screen">
+        <div class="app-header">
+            <button onclick="closeApp()">‹ Kembali</button>
+            <span>Catatan</span>
+        </div>
+        <div class="notes-content">
+            <h3>Daftar Anggota & Catatan:</h3>
+            <p>
+                - <b>Servan</b><br>
+                - <b>Vansen</b><br>
+                - <b>Ceri</b><br>
+                - <b>Thor</b><br>
+                - <b>Allan</b><br><br>
+                PIN Darurat: <b>1234</b>
+            </p>
+        </div>
+        <div class="home-bar" onclick="goHome()"></div>
+    </div>
+</div>
